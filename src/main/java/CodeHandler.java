@@ -1,3 +1,4 @@
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CodeHandler {
@@ -24,6 +25,11 @@ public class CodeHandler {
         }
 
         return true;
+    }
+
+    public static void sortCodes() {
+        // sort codes alphabetically by society name
+        codes.entrySet().stream().sorted(Map.Entry.comparingByValue()).forEachOrdered(x -> codes.put(x.getKey(), x.getValue()));
     }
 
     public static boolean insertCode(String code, String societyName) {

@@ -78,7 +78,6 @@ public class SportsNightCodes {
     }
 
     public static void processAllCodesConcurrent() throws IOException, InterruptedException {
-        System.out.println("Starting threads");
         ThreadPoolExecutor executor = new ThreadPoolExecutor(
                 8,
                 16,
@@ -88,7 +87,6 @@ public class SportsNightCodes {
         );
 
         for (String code : allPossibleCodes) {
-            System.out.println("Submitting code: " + code);
             executor.submit(() -> {
                 try {
                     processCode(code);
@@ -108,6 +106,7 @@ public class SportsNightCodes {
 
         // wait for the threads to finish
 
+        CodeHandler.sortCodes();
         CodeHandler.printCodes();
         FileHandler.saveHashMapToJSON(CodeHandler.getCodes(), "codes.json");
     }
