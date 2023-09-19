@@ -1,9 +1,12 @@
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CodeHandler {
 
     private static final ConcurrentHashMap<String, String> codes = new ConcurrentHashMap<>();
+    private static final SortedMap<String, String> sortedCodes = new TreeMap<>();
 
     private static boolean isValid(String code, String societyName){
         // check neither are null
@@ -29,7 +32,15 @@ public class CodeHandler {
 
     public static void sortCodes() {
         // sort codes alphabetically by society name
-        codes.entrySet().stream().sorted(Map.Entry.comparingByValue()).forEachOrdered(x -> codes.put(x.getKey(), x.getValue()));
+        sortedCodes.putAll(codes);
+    }
+
+    public static SortedMap<String, String> getSortedCodes() {
+        return sortedCodes;
+    }
+
+    public static void printSortedCodes() {
+        System.out.println(sortedCodes);
     }
 
     public static boolean insertCode(String code, String societyName) {
@@ -48,10 +59,6 @@ public class CodeHandler {
         } else {
             return false;
         }
-    }
-
-    public static void printCodes() {
-        System.out.println(codes);
     }
 
     public static ConcurrentHashMap<String, String> getCodes() {

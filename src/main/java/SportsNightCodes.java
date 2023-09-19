@@ -97,7 +97,12 @@ public class SportsNightCodes {
         }
 
         executor.shutdown();
-        executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+
+        if (executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS)) {
+            System.out.println("All threads finished normally");
+        } else {
+            System.out.println("Some threads did not finish");
+        }
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -107,7 +112,7 @@ public class SportsNightCodes {
         // wait for the threads to finish
 
         CodeHandler.sortCodes();
-        CodeHandler.printCodes();
-        FileHandler.saveHashMapToJSON(CodeHandler.getCodes(), "codes.json");
+        CodeHandler.printSortedCodes();
+        FileHandler.saveSortedCodesToJSON(CodeHandler.getSortedCodes(), "codes.json");
     }
 }
