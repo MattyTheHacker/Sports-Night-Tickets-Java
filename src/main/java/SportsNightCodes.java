@@ -77,7 +77,7 @@ public class SportsNightCodes {
         }
     }
 
-    public static void processAllCodesConcurrent() throws IOException, InterruptedException {
+    public static void processAllCodesConcurrent() throws InterruptedException {
         ThreadPoolExecutor executor = new ThreadPoolExecutor(
                 8,
                 16,
@@ -107,9 +107,23 @@ public class SportsNightCodes {
 
     public static void main(String[] args) throws IOException, InterruptedException {
         long startTime = System.currentTimeMillis();
+        boolean useConcurrent = true;
 
         generateAllPossibleCodes();
-        processAllCodesConcurrent();
+
+        // ask the user if they wish to use concurrency
+        System.out.println("Do you wish to disable concurrency? (y/n)");
+
+        String input = System.console().readLine().toLowerCase();
+
+        if (input.equals("y")) {
+            useConcurrent = false;
+        } else {
+            System.out.println("Defaulting to concurrency");
+        }
+
+        if (useConcurrent) processAllCodesConcurrent();
+        else processAllCodes();
 
         // wait for the threads to finish
 
