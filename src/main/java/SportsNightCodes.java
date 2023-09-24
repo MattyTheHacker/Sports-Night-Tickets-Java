@@ -48,7 +48,7 @@ public class SportsNightCodes {
     }
 
     public static void processCode(String code) throws IOException, InterruptedException {
-        Connection connection = Jsoup.connect("https://www.guildofstudents.com/ents/event/7650/?code=" + code);
+        Connection connection = Jsoup.connect("https://www.guildofstudents.com/ents/event/7653/?code=" + code);
         Response page = connection.execute();
 
         if (page.statusCode() != 200) {
@@ -99,13 +99,15 @@ public class SportsNightCodes {
         executor.shutdown();
 
         if (executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS)) {
-            System.out.println("All threads finished normally");
+            System.out.println("[INFO] All threads finished normally");
         } else {
-            System.out.println("Some threads did not finish");
+            System.out.println("[WARN] Some threads did not finish and were forcibly terminated");
         }
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
+        long startTime = System.currentTimeMillis();
+
         generateAllPossibleCodes();
         processAllCodesConcurrent();
 
@@ -114,5 +116,9 @@ public class SportsNightCodes {
         CodeHandler.sortCodes();
         CodeHandler.printSortedCodes();
         FileHandler.saveSortedCodesToJSON(CodeHandler.getSortedCodes(), "codes.json");
+
+        long endTime = System.currentTimeMillis();
+
+        System.out.println("[INFO] Finished in " + (endTime - startTime) + "ms");
     }
 }
