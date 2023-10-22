@@ -7,6 +7,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -48,7 +49,7 @@ public class SportsNightCodes {
     }
 
     public static void processCode(String code) throws IOException, InterruptedException {
-        Connection connection = Jsoup.connect("https://www.guildofstudents.com/ents/event/7653/?code=" + code);
+        Connection connection = Jsoup.connect("https://www.guildofstudents.com/ents/event/7668/?code=" + code);
         Response page = connection.execute();
 
         if (page.statusCode() != 200) {
@@ -79,8 +80,8 @@ public class SportsNightCodes {
 
     public static void processAllCodesConcurrent() throws InterruptedException {
         ThreadPoolExecutor executor = new ThreadPoolExecutor(
-                8,
                 16,
+                32,
                 60L,
                 TimeUnit.SECONDS,
                 new LinkedBlockingQueue<>()
@@ -114,9 +115,10 @@ public class SportsNightCodes {
         // ask the user if they wish to use concurrency
         System.out.println("Do you wish to disable concurrency? (y/n)");
 
-        String input = System.console().readLine().toLowerCase();
+        Scanner input = new Scanner(System.in);
+        String inputString = input.nextLine().toLowerCase();
 
-        if (input.equals("y")) {
+        if (inputString.equals("y")) {
             useConcurrent = false;
         } else {
             System.out.println("Defaulting to concurrency");
